@@ -35,15 +35,28 @@ export interface User {
   role: string;
   team?: string;
   group?: EmployeeGroup;
-  level?: string;
-  class?: string;
   permissionLevel: PermissionLevel;
+
   avatar: string;
   employmentStatus?: EmploymentStatus;
   joinDate?: string;
+  /* Personal Info */
+  phoneNumber?: string;
+  address?: string;
+  personalEmail?: string;
+  university?: string;
+  major?: string;
+
+  /* HR & Finance */
+  department?: string; // e.g. Management, Production, Creative Solution
+  position?: string; // e.g. CEO, Leader, Senior, Junior
+  jobTitle?: string; // e.g. TL, PRO, SEMI-PRO
+  level?: string; // e.g. D1, L1, S1, P1
+  salaryClass?: string; // e.g. D+, A, C
+
   annualSalary?: number;
   monthlySalary?: number;
-  dailyWage?: number;
+
   workStatus: UserWorkStatus;
   lastStatusChange: string;
   lastLocation?: { lat: number; lng: number; timestamp: string };

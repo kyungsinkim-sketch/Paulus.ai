@@ -1,12 +1,12 @@
 
 import React, { useState } from 'react';
 import { User, UserWorkStatus } from '../types';
-import { 
-  CheckCircle, 
-  Coffee, 
-  Dumbbell, 
-  LogOut, 
-  X, 
+import {
+  CheckCircle,
+  Coffee,
+  Dumbbell,
+  LogOut,
+  X,
   Clock,
   Loader2,
   MapPin
@@ -16,9 +16,10 @@ interface SetStatusPopoverProps {
   user: User;
   onStatusChange: (status: UserWorkStatus, location?: { lat: number; lng: number }) => void;
   onClose: () => void;
+  onProfileClick?: () => void;
 }
 
-const SetStatusPopover: React.FC<SetStatusPopoverProps> = ({ user, onStatusChange, onClose }) => {
+const SetStatusPopover: React.FC<SetStatusPopoverProps> = ({ user, onStatusChange, onClose, onProfileClick }) => {
   const [isLocating, setIsLocating] = useState(false);
 
   const handleAction = (status: UserWorkStatus) => {
@@ -54,7 +55,7 @@ const SetStatusPopover: React.FC<SetStatusPopoverProps> = ({ user, onStatusChang
       </div>
 
       <div className="p-3 grid grid-cols-2 gap-2">
-        <button 
+        <button
           onClick={() => handleAction('CHECKED_IN')}
           disabled={isLocating}
           className={`flex flex-col items-center gap-2 p-3 rounded-xl transition-all border ${user.workStatus === 'CHECKED_IN' ? 'bg-green-50 border-green-100 text-green-700' : 'bg-white border-gray-100 hover:bg-gray-50 text-gray-600 hover:border-gray-200'} disabled:opacity-50`}
@@ -63,7 +64,7 @@ const SetStatusPopover: React.FC<SetStatusPopoverProps> = ({ user, onStatusChang
           <span className="text-[10px] font-black uppercase tracking-widest">{isLocating ? 'Locating...' : 'Check In'}</span>
         </button>
 
-        <button 
+        <button
           onClick={() => handleAction('LUNCH')}
           className={`flex flex-col items-center gap-2 p-3 rounded-xl transition-all border ${user.workStatus === 'LUNCH' ? 'bg-orange-50 border-orange-100 text-orange-700' : 'bg-white border-gray-100 hover:bg-gray-50 text-gray-600 hover:border-gray-200'}`}
         >
@@ -71,7 +72,7 @@ const SetStatusPopover: React.FC<SetStatusPopoverProps> = ({ user, onStatusChang
           <span className="text-[10px] font-black uppercase tracking-widest">Lunch</span>
         </button>
 
-        <button 
+        <button
           onClick={() => handleAction('WORKOUT')}
           className={`flex flex-col items-center gap-2 p-3 rounded-xl transition-all border ${user.workStatus === 'WORKOUT' ? 'bg-blue-50 border-blue-100 text-blue-700' : 'bg-white border-gray-100 hover:bg-gray-50 text-gray-600 hover:border-gray-200'}`}
         >
@@ -79,12 +80,21 @@ const SetStatusPopover: React.FC<SetStatusPopoverProps> = ({ user, onStatusChang
           <span className="text-[10px] font-black uppercase tracking-widest">Workout</span>
         </button>
 
-        <button 
+        <button
           onClick={() => handleAction('CHECKED_OUT')}
           className="flex flex-col items-center gap-2 p-3 rounded-xl transition-all border bg-white border-gray-100 hover:bg-red-50 text-gray-600 hover:text-red-600 hover:border-red-100 group"
         >
           <LogOut size={20} className="text-gray-300 group-hover:text-red-400" />
           <span className="text-[10px] font-black uppercase tracking-widest">Logout</span>
+        </button>
+      </div>
+
+      <div className="px-5 py-3 border-t border-gray-50 flex justify-center">
+        <button
+          onClick={() => { onProfileClick?.(); onClose(); }}
+          className="text-[10px] font-bold text-gray-500 hover:text-blue-600 transition-colors uppercase tracking-widest flex items-center gap-1.5"
+        >
+          <div className="w-1.5 h-1.5 bg-gray-300 rounded-full group-hover:bg-blue-500"></div> My Profile Settings
         </button>
       </div>
 
@@ -99,7 +109,7 @@ const SetStatusPopover: React.FC<SetStatusPopoverProps> = ({ user, onStatusChang
           <div className="h-full bg-gray-900 rounded-full" style={{ width: '0%' }}></div>
         </div>
         <p className="text-[9px] text-gray-400 font-medium mt-2 leading-tight flex items-center gap-1">
-          <MapPin size={10}/> Net work hours synced via realtime presence.
+          <MapPin size={10} /> Net work hours synced via realtime presence.
         </p>
       </div>
     </div>

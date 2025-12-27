@@ -40,7 +40,9 @@ import {
   Edit2
 } from 'lucide-react';
 
-type NavSection = 'DASHBOARD' | 'PROJECT' | 'ADMIN';
+import ProfileSettingPage from '../components/ProfileSettingPage';
+
+type NavSection = 'DASHBOARD' | 'PROJECT' | 'ADMIN' | 'PROFILE';
 
 type ProjectStage =
   | 'CLIENT_BRIEF'
@@ -84,7 +86,8 @@ const WorkspaceRoot: React.FC = () => {
 
   const t = (en: string, ko: string) => language === 'KO' ? ko : en;
 
-  const users = useMemo(() => StaffSeedService.getAllStaff(), []);
+  /* User State (Synced with Admin) */
+  const [users, setUsers] = useState<User[]>(() => StaffSeedService.getAllStaff());
   const [currentUser, setCurrentUser] = useState<User>(users[0]);
   const { canAccessAdminPanel } = useAdminAccess(currentUser);
 
@@ -196,6 +199,13 @@ const WorkspaceRoot: React.FC = () => {
     }
   };
 
+  const handleUpdateUser = useCallback((updated: User) => {
+    setUsers(prev => prev.map(u => u.id === updated.id ? updated : u));
+    if (currentUser.id === updated.id) {
+      setCurrentUser(updated);
+    }
+  }, [currentUser.id]);
+
   const handleAddSlide = useCallback(() => {
     if (!project) return;
     const newId = `slide-${Date.now()}`;
@@ -243,7 +253,8 @@ const WorkspaceRoot: React.FC = () => {
           case 'PRODUCTION': return <ProductionPage project={project} onUpdateProject={handleUpdateProject} language={language} />;
           default: return null;
         }
-      case 'ADMIN': return <AdminDashboardPage projects={projects} users={users} onUpdateProject={handleUpdateProject} onUpdateUser={() => { }} language={language} />;
+      case 'ADMIN': return <AdminDashboardPage projects={projects} users={users} onUpdateProject={handleUpdateProject} onUpdateUser={handleUpdateUser} language={language} />;
+      case 'PROFILE': return <ProfileSettingPage user={currentUser} projects={projects} onUpdateUser={handleUpdateUser} language={language} />;
       default: return null;
     }
   };
@@ -297,7 +308,11 @@ const WorkspaceRoot: React.FC = () => {
           </nav>
         </div>
         <div className="nav-user-area">
-          <GlobalUserArea user={currentUser} onStatusChange={handleStatusChange} />
+          <GlobalUserArea
+            user={currentUser}
+            onStatusChange={handleStatusChange}
+            onProfileClick={() => setActiveNav('PROFILE')}
+          />
         </div>
       </aside>
 
