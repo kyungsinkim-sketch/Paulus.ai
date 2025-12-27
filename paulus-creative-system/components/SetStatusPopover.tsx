@@ -89,14 +89,7 @@ const SetStatusPopover: React.FC<SetStatusPopoverProps> = ({ user, onStatusChang
         </button>
       </div>
 
-      <div className="px-5 py-3 border-t border-gray-50 flex justify-center">
-        <button
-          onClick={() => { onProfileClick?.(); onClose(); }}
-          className="text-[10px] font-bold text-gray-500 hover:text-blue-600 transition-colors uppercase tracking-widest flex items-center gap-1.5"
-        >
-          <div className="w-1.5 h-1.5 bg-gray-300 rounded-full group-hover:bg-blue-500"></div> My Profile Settings
-        </button>
-      </div>
+
 
       <div className="px-5 py-5 border-t border-gray-50 bg-gray-50/30 font-sans">
         <div className="flex justify-between items-center mb-2">
@@ -112,7 +105,7 @@ const SetStatusPopover: React.FC<SetStatusPopoverProps> = ({ user, onStatusChang
           <MapPin size={10} /> Net work hours synced via realtime presence.
         </p>
       </div>
-    </div>
+    </div >
   );
 };
 
