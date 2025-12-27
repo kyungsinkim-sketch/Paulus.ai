@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { User, Project } from '../types';
-import { User as UserIcon, Briefcase, FileText, Download, Save, MapPin, GraduationCap, Phone, Mail } from 'lucide-react';
+import { User as UserIcon, Briefcase, FileText, Download, Save, MapPin, GraduationCap, Phone, Mail, Plus, Trash2, Camera } from 'lucide-react';
 import { exportToExcel } from '../services/export/exportExcel';
 
 interface ProfileSettingPageProps {
@@ -20,6 +20,35 @@ const ProfileSettingPage: React.FC<ProfileSettingPageProps> = ({ user, projects,
 
     const handleChange = (field: keyof User, value: any) => {
         setFormData(prev => ({ ...prev, [field]: value }));
+    };
+
+    const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                if (ev.target?.result) {
+                    handleChange('avatar', ev.target.result as string);
+                }
+            };
+            reader.readAsDataURL(e.target.files[0]);
+        }
+    };
+
+    const handleEducationChange = (index: number, field: string, value: string) => {
+        const newHistory = [...(formData.educationHistory || [])];
+        if (!newHistory[index]) newHistory[index] = { school: '', major: '' };
+        (newHistory[index] as any)[field] = value;
+        handleChange('educationHistory', newHistory);
+    };
+
+    const addEducation = () => {
+        handleChange('educationHistory', [...(formData.educationHistory || []), { school: '', major: '', year: '' }]);
+    };
+
+    const removeEducation = (index: number) => {
+        const newHistory = [...(formData.educationHistory || [])];
+        newHistory.splice(index, 1);
+        handleChange('educationHistory', newHistory);
     };
 
     const handleSave = () => {
@@ -104,9 +133,11 @@ const ProfileSettingPage: React.FC<ProfileSettingPageProps> = ({ user, projects,
                             <div className="col-span-3 flex flex-col items-center gap-4">
                                 <div className="w-32 h-32 rounded-3xl bg-gray-100 border-[4px] border-white shadow-lg overflow-hidden relative group">
                                     <img src={formData.avatar} alt="Profile" className="w-full h-full object-cover" />
-                                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer">
-                                        <span className="text-white text-xs font-bold uppercase">Change</span>
-                                    </div>
+                                    <label className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center cursor-pointer text-white gap-2">
+                                        <Camera size={20} />
+                                        <span className="text-[9px] font-bold uppercase tracking-widest">Upload Photo</span>
+                                        <input type="file" className="hidden" accept="image/*" onChange={handleAvatarChange} />
+                                    </label>
                                 </div>
                                 <div className="text-center">
                                     <div className="text-xs font-black uppercase tracking-widest text-gray-400">Employee ID</div>
@@ -146,6 +177,47 @@ const ProfileSettingPage: React.FC<ProfileSettingPageProps> = ({ user, projects,
                                 <div>
                                     <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2 block">Major</label>
                                     <input type="text" value={formData.major || ''} onChange={(e) => handleChange('major', e.target.value)} className="w-full p-3 bg-gray-50 border-none rounded-xl text-sm font-medium text-gray-900 focus:ring-2 focus:ring-blue-500 outline-none transition-all" />
+                                </div>
+
+                                <div className="col-span-2">
+                                    <div className="flex items-center justify-between mb-2">
+                                        <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1"><GraduationCap size={10} /> Education History</label>
+                                        <button onClick={addEducation} className="text-[10px] font-bold text-blue-600 hover:text-blue-700 uppercase flex items-center gap-1">
+                                            <Plus size={10} /> Add
+                                        </button>
+                                    </div>
+                                    <div className="space-y-2">
+                                        {(formData.educationHistory || []).map((edu, idx) => (
+                                            <div key={idx} className="flex gap-2 animate-in slide-in-from-left-2 duration-300">
+                                                <input
+                                                    placeholder="School Name"
+                                                    value={edu.school}
+                                                    onChange={(e) => handleEducationChange(idx, 'school', e.target.value)}
+                                                    className="flex-1 p-3 bg-gray-50 border-none rounded-xl text-sm font-medium text-gray-900 focus:ring-2 focus:ring-blue-500 outline-none"
+                                                />
+                                                <input
+                                                    placeholder="Major / Degree"
+                                                    value={edu.major}
+                                                    onChange={(e) => handleEducationChange(idx, 'major', e.target.value)}
+                                                    className="flex-1 p-3 bg-gray-50 border-none rounded-xl text-sm font-medium text-gray-900 focus:ring-2 focus:ring-blue-500 outline-none"
+                                                />
+                                                <input
+                                                    placeholder="Year (e.g. 2020)"
+                                                    value={edu.year || ''}
+                                                    onChange={(e) => handleEducationChange(idx, 'year', e.target.value)}
+                                                    className="w-24 p-3 bg-gray-50 border-none rounded-xl text-sm font-medium text-gray-900 focus:ring-2 focus:ring-blue-500 outline-none"
+                                                />
+                                                <button onClick={() => removeEducation(idx)} className="p-3 text-gray-300 hover:text-red-500 transition-colors">
+                                                    <Trash2 size={16} />
+                                                </button>
+                                            </div>
+                                        ))}
+                                        {(!formData.educationHistory || formData.educationHistory.length === 0) && (
+                                            <div className="text-center py-4 bg-gray-50 rounded-xl border border-dashed border-gray-200 text-xs text-gray-400">
+                                                No education history added. Click 'Add' to insert.
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                         </div>

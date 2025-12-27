@@ -43,34 +43,39 @@ const GlobalUserArea: React.FC<GlobalUserAreaProps> = ({ user, onStatusChange, o
         />
       )}
 
-      <button
-        onClick={() => setIsPopoverOpen(!isPopoverOpen)}
-        className="w-full flex items-center gap-3 group transition-all"
-        aria-expanded={isPopoverOpen}
-        aria-haspopup="true"
-      >
-        <div className="relative shrink-0">
+      <div className="flex items-center gap-3 w-full">
+        <button
+          onClick={onProfileClick}
+          className="relative shrink-0 group cursor-pointer transition-transform active:scale-95"
+          title="Go to My Profile"
+        >
           <img
             src={user.avatar}
             alt={user.name}
             className="w-9 h-9 rounded-xl border border-white/10 object-cover shadow-sm group-hover:border-blue-500 transition-colors"
           />
           <div className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-[#0B0F14] ${getStatusColor(user.workStatus)}`}></div>
-        </div>
+        </button>
 
-        <div className="flex-1 min-w-0 text-left">
-          <p className="nav-user-name truncate leading-tight group-hover:text-blue-400 transition-colors">{user.name}</p>
-          <div className="flex items-center gap-1.5 mt-0.5">
-            {user.workStatus === 'CHECKED_IN' ? (
-              <span className="nav-user-status flex items-center gap-1"><Clock size={10} className="animate-pulse" /> Working</span>
-            ) : (
-              <span className="text-[10px] text-white/30 uppercase font-bold flex items-center gap-1"><PauseCircle size={10} /> {getStatusLabel(user.workStatus)}</span>
-            )}
+        <button
+          onClick={() => setIsPopoverOpen(!isPopoverOpen)}
+          className="flex-1 min-w-0 text-left group flex items-center justify-between"
+          aria-expanded={isPopoverOpen}
+          aria-haspopup="true"
+        >
+          <div>
+            <p className="nav-user-name truncate leading-tight group-hover:text-blue-400 transition-colors">{user.name}</p>
+            <div className="flex items-center gap-1.5 mt-0.5">
+              {user.workStatus === 'CHECKED_IN' ? (
+                <span className="nav-user-status flex items-center gap-1"><Clock size={10} className="animate-pulse" /> Working</span>
+              ) : (
+                <span className="text-[10px] text-white/30 uppercase font-bold flex items-center gap-1"><PauseCircle size={10} /> {getStatusLabel(user.workStatus)}</span>
+              )}
+            </div>
           </div>
-        </div>
-
-        <ChevronUp size={14} className={`text-white/20 transition-transform duration-300 ${isPopoverOpen ? 'rotate-180 text-blue-500' : 'group-hover:text-white/40'}`} />
-      </button>
+          <ChevronUp size={14} className={`text-white/20 transition-transform duration-300 ${isPopoverOpen ? 'rotate-180 text-blue-500' : 'group-hover:text-white/40'}`} />
+        </button>
+      </div>
     </div>
   );
 };

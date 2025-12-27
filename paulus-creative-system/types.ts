@@ -46,6 +46,7 @@ export interface User {
   personalEmail?: string;
   university?: string;
   major?: string;
+  educationHistory?: { school: string; major: string; year?: string }[];
 
   /* HR & Finance */
   department?: string; // e.g. Management, Production, Creative Solution
