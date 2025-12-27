@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Paulus Deck Editor v1.0</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              gray: {
+                50: '#f9fafb',
+                100: '#f3f4f6',
+                200: '#e5e7eb',
+                800: '#1f2937',
+                900: '#111827',
+              },
+              brand: {
+                50: '#eff6ff',
+                100: '#dbeafe',
+                500: '#3b82f6',
+                600: '#2563eb',
+                900: '#1e3a8a',
+              }
+            },
+            fontFamily: {
+              sans: ['Pretendard', 'Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+    <!-- PptxGenJS library for Phase 11 Export -->
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
+    <style>
+      body {
+        font-family: 'Pretendard', 'Inter', sans-serif;
+        background-color: #f9fafb;
+        color: #111827;
+        margin: 0;
+        overflow: hidden;
+      }
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #e5e7eb;
+        border-radius: 10px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #d1d5db;
+      }
+
+      /* PAULUS.AI — RESTORE NAVIGATION STYLE (LEGACY) */
+      :root {
+        --nav-font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+        --nav-bg: #0B0F14;
+        --nav-text-primary: rgba(255,255,255,0.75);
+        --nav-text-secondary: rgba(255,255,255,0.45);
+        --nav-text-active: #FFFFFF;
+        --nav-accent: #3B82F6;
+      }
+
+      .left-nav {
+        background: var(--nav-bg);
+        color: var(--nav-text-primary);
+        font-family: var(--nav-font-family);
+      }
+
+      .nav-item {
+        height: 42px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 0 20px;
+        font-size: 14px;
+        font-weight: 400;
+        color: var(--nav-text-primary);
+        transition: all 0.2s ease;
+        position: relative;
+      }
+
+      .nav-item .icon {
+        width: 18px;
+        height: 18px;
+        opacity: 0.9;
+        flex-shrink: 0;
+      }
+
+      .nav-item:hover {
+        color: var(--nav-text-active);
+        background: rgba(255,255,255,0.03);
+      }
+
+      .nav-item.active {
+        color: var(--nav-accent);
+        font-weight: 600;
+        background: rgba(59, 130, 246, 0.05);
+      }
+
+      .nav-item.active .icon {
+        color: var(--nav-accent);
+        opacity: 1;
+      }
+
+      .nav-item.active::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 8px;
+        bottom: 8px;
+        width: 3px;
+        background: var(--nav-accent);
+        border-radius: 0 2px 2px 0;
+      }
+
+      .current-project-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #FFFFFF;
+        line-height: 1.2;
+      }
+
+      .current-project-subtitle {
+        font-size: 10px;
+        font-weight: 700;
+        color: var(--nav-text-secondary);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .nav-user-area {
+        border-top: 1px solid rgba(255,255,255,0.08);
+        padding: 8px 0;
+      }
+
+      .nav-user-name {
+        font-size: 13px;
+        font-weight: 500;
+        color: #FFFFFF;
+      }
+
+      .nav-user-status {
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--nav-accent);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
+    "@google/genai": "https://esm.sh/@google/genai@^1.34.0",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3",
+    "d3": "https://esm.sh/d3@^7.9.0",
+    "react-dom": "https://esm.sh/react-dom@^19.2.3",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "yjs": "https://esm.sh/yjs@^13.6.28"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>

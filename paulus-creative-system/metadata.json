@@ -1,0 +1,7 @@
+{
+  "name": "PAULUS Creative System",
+  "description": "Professional-grade creative agency workflow platform with AI-powered strategy, ideation, and production planning.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
